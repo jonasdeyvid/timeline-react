@@ -20,13 +20,13 @@ export function useTimeline() {
     // Calculate optimal height for each lane based on its tallest item
     return assignedLanes.map(lane => {
       const maxHeight = Math.max(
-        ...lane.map(item => item.position?.recommendedHeight || 40),
-        60 // Minimum lane height
+        ...lane.map(item => item.position?.recommendedHeight || 60), // Increased default from 40
+        80 // Minimum lane height (increased from 60)
       );
       
       return {
         items: lane,
-        height: maxHeight + 20 // Add padding for lane spacing
+        height: maxHeight + 70 // Add padding for lane spacing (increased from 20)
       };
     });
   }, [timelineData.items]);

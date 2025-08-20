@@ -111,38 +111,38 @@ function calculateRelaxationInfo(name, duration, originalWidth) {
   // Calculate minimum width based on content
   let minWidth = originalWidth;
   let needsMultiLine = false;
-  let recommendedHeight = 40; // Base height
+  let recommendedHeight = 60; // Base height (increased from 40)
   
   // Rule 0: Very small original width always gets expanded
   if (originalWidth < 2) {
     minWidth = Math.max(originalWidth, 8); // Small items get at least 8%
-    recommendedHeight = 50;
+    recommendedHeight = 70; // Increased from 50
   }
   
   // Rule 1: Single day events need minimum readable space
   if (duration === 1) {
     minWidth = Math.max(originalWidth, 6); // At least 6% of timeline (increased from 4%)
-    recommendedHeight = 45;
+    recommendedHeight = 65; // Increased from 45
   }
   
   // Rule 2: Short duration with long names
   if (isShortDuration && isLongName) {
     minWidth = Math.max(originalWidth, 8); // At least 8% of timeline (increased from 6%)
     needsMultiLine = isVeryLongName;
-    recommendedHeight = needsMultiLine ? 60 : 50;
+    recommendedHeight = needsMultiLine ? 80 : 70; // Increased from 60/50
   }
   
   // Rule 3: Very long names regardless of duration
   if (isVeryLongName) {
     needsMultiLine = true;
-    recommendedHeight = 65;
+    recommendedHeight = 85; // Increased from 65
     minWidth = Math.max(originalWidth, 10); // At least 10% for very long names (increased from 8%)
   }
   
   // Rule 4: Regular long names
   else if (isLongName && !isShortDuration) {
     minWidth = Math.max(originalWidth, 7); // At least 7% of timeline (increased from 5%)
-    recommendedHeight = 45;
+    recommendedHeight = 65; // Increased from 45
   }
   
   // Ensure minimum visibility but cap maximum to prevent excessive expansion

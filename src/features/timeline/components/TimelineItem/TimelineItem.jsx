@@ -26,7 +26,7 @@ function TimelineItem({ item }) {
       style={{
         left: `${position.left}%`,
         width: `${position.width}%`,
-        height: `${position.recommendedHeight}px`,
+        //height: `${position.recommendedHeight}px`,
       }}
       onClick={handleClick}
       title={`${name}\n${start} - ${end}\nDuration: ${position.duration} day(s)${position.width > position.originalWidth ? '\n(Relaxed width)' : ''}`}
