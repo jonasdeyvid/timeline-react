@@ -54,7 +54,7 @@
 }
 
 .timeline-item-name {
-  font-size: 0.85rem; /* Increased from 0.75rem */
+  font-size: 0.85rem;
   font-weight: 600;
   line-height: 1.2;
   word-wrap: break-word;
@@ -63,6 +63,41 @@
   text-overflow: ellipsis;
   white-space: wrap;
   max-width: 100%;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.timeline-item-name:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  padding: 1px 2px;
+}
+
+.timeline-item-name-input {
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #3b82f6;
+  border-radius: 4px;
+  color: #1f2937;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 2px 4px;
+  width: 100%;
+  max-width: 100%;
+  text-align: left;
+  line-height: 1.2;
+  outline: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.timeline-item-name-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.timeline-item.editing {
+  z-index: 100;
+  transform: scale(1.02);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 /* Duration section */

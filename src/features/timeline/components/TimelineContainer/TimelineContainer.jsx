@@ -1,11 +1,11 @@
 import React from 'react';
-import { useTimeline } from '../../hooks/useTimeline';
+import { useTimelineContext } from '../../context/TimelineContext';
 import TimelineItem from '../TimelineItem';
 import MonthsHeader from '../MonthsHeader';
 import './TimelineContainer.css';
 
 function TimelineContainer() {
-  const { lanes, dateMarkers, stats } = useTimeline();
+  const { lanes, dateMarkers, stats, updateItemName } = useTimelineContext();
 
   return (
     <div className="timeline-container">
@@ -45,7 +45,11 @@ function TimelineContainer() {
               <div className="lane-header">Lane {laneIndex + 1}</div>
               <div className="lane-track">
                 {laneData.items.map(item => (
-                  <TimelineItem key={item.id} item={item} />
+                  <TimelineItem 
+                    key={item.id} 
+                    item={item} 
+                    onNameChange={updateItemName}
+                  />
                 ))}
               </div>
             </div>
