@@ -5,7 +5,7 @@ import MonthsHeader from '../MonthsHeader';
 import './TimelineContainer.css';
 
 function TimelineContainer() {
-  const { lanes, dateMarkers, stats, updateItemName } = useTimelineContext();
+  const { lanes, dateMarkers, stats, updateItemName, updateItemDates, timelineData } = useTimelineContext();
 
   return (
     <div className="timeline-container">
@@ -49,6 +49,8 @@ function TimelineContainer() {
                     key={item.id} 
                     item={item} 
                     onNameChange={updateItemName}
+                    onDateChange={updateItemDates}
+                    timelineData={timelineData}
                   />
                 ))}
               </div>

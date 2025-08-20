@@ -2,12 +2,13 @@
   position: absolute;
   background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
   border-radius: var(--border-radius-md);
-  cursor: pointer;
+  cursor: default;
   transition: all 0.2s ease;
   border: 2px solid rgba(255, 255, 255, 0.2);
   min-width: 140px; /* Increased from 100px */
   display: flex;
   align-items: center;
+  user-select: none;
   /* Positioning will be controlled by inline styles */
 }
 
@@ -98,6 +99,77 @@
   z-index: 100;
   transform: scale(1.02);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Drag and Drop Styles */
+.timeline-item.dragging {
+  z-index: 200;
+  opacity: 0.95;
+  cursor: grabbing;
+  transform: scale(1.02) translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  transition: none; /* Disable transitions during drag for smooth movement */
+}
+
+.timeline-item.dragging .timeline-item-dates {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.timeline-item-resize-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  background: rgba(255, 255, 255, 0.6);
+  cursor: col-resize;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+  z-index: 20;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  font-size: 8px;
+  font-weight: bold;
+}
+
+.timeline-item-resize-handle:hover,
+.timeline-item:hover .timeline-item-resize-handle {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.9);
+  transform: scale(1.1);
+}
+
+.timeline-item-resize-handle.resize-start {
+  left: 0;
+  border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.timeline-item-resize-handle.resize-end {
+  right: 0;
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.timeline-item-resize-handle:active {
+  background: rgba(255, 255, 255, 0.8);
+  cursor: grabbing;
+}
+
+.timeline-item-content {
+  flex: 1;
+  position: relative;
+  z-index: 5;
+  cursor: move;
 }
 
 /* Duration section */

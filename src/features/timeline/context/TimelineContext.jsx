@@ -17,6 +17,19 @@ export const TimelineProvider = ({ children }) => {
     );
   };
 
+  const updateItemDates = (itemId, newStartDate, newEndDate) => {
+    console.log('Updating item dates:', itemId, newStartDate, newEndDate);
+    setTimelineItems(prevItems => 
+      prevItems.map(item => 
+        item.id === itemId ? { 
+          ...item, 
+          start: newStartDate, 
+          end: newEndDate 
+        } : item
+      )
+    );
+  };
+
   const timelineData = useMemo(() => calculateTimelinePositions(timelineItems), [timelineItems]);
   
   const lanesWithHeights = useMemo(() => {
@@ -63,7 +76,8 @@ export const TimelineProvider = ({ children }) => {
     dateMarkers,
     stats,
     timelineData,
-    updateItemName
+    updateItemName,
+    updateItemDates
   };
 
   return (
