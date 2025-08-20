@@ -73,7 +73,7 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData }) {
     }
     
     const rect = timelineContainer.getBoundingClientRect();
-    const relativeX = Math.max(0, Math.min(clientX - rect.left, rect.width));
+    const relativeX = clientX - rect.left; // Allow negative values for expansion
     const percentage = (relativeX / rect.width) * 100;
     
     console.log('Calculating date:', { 
@@ -92,6 +92,14 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData }) {
     const newDate = addDays(timelineData.startDate, dayOffset);
     console.log('New date calculated:', newDate, 'dayOffset:', dayOffset);
     
+    // Check if we're dragging beyond timeline bounds
+    const isExpandingLeft = percentage < -5; // 5% buffer before expanding
+    const isExpandingRight = percentage > 105; // 5% buffer before expanding
+    
+    if (isExpandingLeft || isExpandingRight) {
+      console.log('Timeline expansion needed:', { isExpandingLeft, isExpandingRight, percentage });
+    }
+    
     return newDate;
   }, [timelineData]);
 
@@ -109,10 +117,18 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData }) {
     const left = (startOffset / totalDays) * 100;
     const width = (duration / totalDays) * 100;
     
-    console.log('Calculate position:', { startDate, endDate, startOffset, duration, left, width });
+    console.log('Calculate position:', { 
+      startDate, 
+      endDate, 
+      startOffset, 
+      duration, 
+      left, 
+      width,
+      isOutsideBounds: left < 0 || left + width > 100
+    });
     
     return {
-      left: Math.max(0, left),
+      left: left, // Don't clamp to allow visual indication of expansion
       width: Math.max(0.5, width)
     };
   }, [timelineData]);
@@ -223,18 +239,24 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData }) {
     }
   }, [id, start, end, calculateDateFromPosition, calculatePositionFromDates]);
 
+  const displayStart = isDragging && dragPreview ? dragPreview.start : start;
+  const displayEnd = isDragging && dragPreview ? dragPreview.end : end;
+  const displayPosition = isDragging && dragPosition ? dragPosition : position;
+  
+  // Check if item is being dragged outside timeline bounds
+  const isOutsideBounds = isDragging && dragPosition && (
+    dragPosition.left < 0 || dragPosition.left + dragPosition.width > 100
+  );
+
   const itemClasses = [
     'timeline-item',
     position.needsMultiLine ? 'multi-line' : '',
     position.isShortDuration ? 'short-duration' : '',
     position.width > position.originalWidth ? 'relaxed' : '',
     isEditing ? 'editing' : '',
-    isDragging ? 'dragging' : ''
+    isDragging ? 'dragging' : '',
+    isOutsideBounds ? 'outside-bounds' : ''
   ].filter(Boolean).join(' ');
-
-  const displayStart = isDragging && dragPreview ? dragPreview.start : start;
-  const displayEnd = isDragging && dragPreview ? dragPreview.end : end;
-  const displayPosition = isDragging && dragPosition ? dragPosition : position;
 
   return (
     <div
@@ -244,7 +266,7 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData }) {
         left: `${displayPosition.left}%`,
         width: `${displayPosition.width}%`,
       }}
-      title={`${name}\n${displayStart} - ${displayEnd}\nDuration: ${position.duration} day(s)${position.width > position.originalWidth ? '\n(Relaxed width)' : ''}\nDrag to move, drag edges to resize${isDragging ? '\n(Preview - release to apply)' : ''}`}
+      title={`${name}\n${displayStart} - ${displayEnd}\nDuration: ${position.duration} day(s)${position.width > position.originalWidth ? '\n(Relaxed width)' : ''}\nDrag to move, drag edges to resize${isDragging ? '\n(Preview - release to apply)' : ''}${isOutsideBounds ? '\n🔥 Timeline will expand to accommodate new dates!' : ''}`}
     >
       <div 
         className="timeline-item-resize-handle resize-start"

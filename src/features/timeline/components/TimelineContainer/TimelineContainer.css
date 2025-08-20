@@ -95,6 +95,50 @@
 /* Timeline lanes */
 .timeline-lanes {
   padding-top: 40px; /* Space for date labels */
+  position: relative;
+  overflow: visible; /* Allow items to be dragged outside */
+}
+
+.timeline-lanes::before,
+.timeline-lanes::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.timeline-lanes::before {
+  left: -10px;
+  background: linear-gradient(to right, #ff6b35, transparent);
+  border-left: 3px solid #ff6b35;
+}
+
+.timeline-lanes::after {
+  right: -10px;
+  background: linear-gradient(to left, #ff6b35, transparent);
+  border-right: 3px solid #ff6b35;
+}
+
+.timeline-lanes.expansion-left::before,
+.timeline-lanes.expansion-right::after {
+  opacity: 0.7;
+  animation: expandHint 1s infinite;
+}
+
+@keyframes expandHint {
+  0%, 100% { 
+    opacity: 0.7;
+    transform: scaleX(1);
+  }
+  50% { 
+    opacity: 1;
+    transform: scaleX(1.2);
+  }
 }
 
 .timeline-lane {
