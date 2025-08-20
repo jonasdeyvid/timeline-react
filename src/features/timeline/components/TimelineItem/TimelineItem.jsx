@@ -283,10 +283,6 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData, zoomLeve
       <div 
         className="timeline-item-content"
         onMouseDown={(e) => handleMouseDown(e, 'move')}
-        style={{
-          transform: `scaleX(${1/zoomLevel})`,
-          transformOrigin: 'left center'
-        }}
       >
         <div className="timeline-item-section timeline-item-name-section">
           {isEditing ? (
@@ -299,12 +295,20 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData, zoomLeve
               onBlur={handleNameBlur}
               autoFocus
               maxLength={50}
+              style={{
+                transform: `scaleX(${1/zoomLevel})`,
+                transformOrigin: 'left center'
+              }}
             />
           ) : (
             <span 
               className="timeline-item-name" 
               onDoubleClick={handleNameDoubleClick}
               title="Double-click to edit"
+              style={{
+                transform: `scaleX(${1/zoomLevel})`,
+                transformOrigin: 'left center'
+              }}
             >
               {name}
             </span>
@@ -312,13 +316,25 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData, zoomLeve
         </div>
         
         <div className="timeline-item-section timeline-item-duration-section">
-          <span className="timeline-item-duration">
+          <span 
+            className="timeline-item-duration"
+            style={{
+              transform: `scaleX(${1/zoomLevel})`,
+              transformOrigin: 'center center'
+            }}
+          >
             {position.duration} day{position.duration > 1 ? 's' : ''}
           </span>
         </div>
         
         <div className="timeline-item-section timeline-item-dates-section">
-          <div className="timeline-item-dates">
+          <div 
+            className="timeline-item-dates"
+            style={{
+              transform: `scaleX(${1/zoomLevel})`,
+              transformOrigin: 'center center'
+            }}
+          >
             {isDragging && dragPreview ? (
               position.duration === 1 ? dragPreview.start : `${dragPreview.start} - ${dragPreview.end}`
             ) : (
