@@ -47,11 +47,9 @@
 /* Name section */
 .timeline-item-name-section {
   flex: 0 0 auto; /* Don't grow or shrink, auto size */
-  justify-content: flex-start;
-  padding-left: 10px;
-  /* max-height: 32px; Limit maximum height for single line */
-  align-items: flex-start;
-  padding-top: 4px;
+  justify-content: center;
+  padding: 4px 8px;
+  align-items: center;
 }
 
 .timeline-item-name {
@@ -60,7 +58,7 @@
   line-height: 1.2;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  text-align: left;
+  text-align: center;
   text-overflow: ellipsis;
   white-space: wrap;
   max-width: 100%;
@@ -84,7 +82,7 @@
   padding: 2px 4px;
   width: 100%;
   max-width: 100%;
-  text-align: left;
+  text-align: center;
   line-height: 1.2;
   outline: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);

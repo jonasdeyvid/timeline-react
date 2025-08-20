@@ -297,7 +297,7 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData, zoomLeve
               maxLength={50}
               style={{
                 transform: `scaleX(${1/zoomLevel})`,
-                transformOrigin: 'left center'
+                transformOrigin: 'center center'
               }}
             />
           ) : (
@@ -307,7 +307,7 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData, zoomLeve
               title="Double-click to edit"
               style={{
                 transform: `scaleX(${1/zoomLevel})`,
-                transformOrigin: 'left center'
+                transformOrigin: 'center center'
               }}
             >
               {name}
