@@ -1,6 +1,6 @@
 .zoom-controls {
   position: fixed;
-  top: 20px;
+  bottom: 20px;
   right: 20px;
   background: white;
   border-radius: var(--border-radius-lg);
@@ -147,10 +147,6 @@
 /* Responsive */
 @media (max-width: 768px) {
   .zoom-controls {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    top: auto;
     min-width: 160px;
     padding: 12px;
   }
