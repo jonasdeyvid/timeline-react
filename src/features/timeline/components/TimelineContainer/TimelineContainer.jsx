@@ -17,7 +17,7 @@ function TimelineContainer() {
       <ZoomControls />
       
       <header className="timeline-header">
-        <h2>Timeline Project {"\u2728"}</h2>
+        <h2>Timeline Project</h2>
         <div className="timeline-stats">
           <span>{stats.totalItems} items</span>
           <span>{stats.totalLanes} lanes</span>
