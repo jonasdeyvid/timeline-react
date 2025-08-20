@@ -38,11 +38,15 @@ function TimelineContainer() {
         
         {/* Timeline lanes */}
         <div className="timeline-lanes">
-          {lanes.map((lane, laneIndex) => (
-            <div key={laneIndex} className="timeline-lane">
+          {lanes.map((laneData, laneIndex) => (
+            <div 
+              key={laneIndex} 
+              className="timeline-lane"
+              style={{ height: `${laneData.height}px` }}
+            >
               <div className="lane-header">Lane {laneIndex + 1}</div>
               <div className="lane-track">
-                {lane.map(item => (
+                {laneData.items.map(item => (
                   <TimelineItem key={item.id} item={item} />
                 ))}
               </div>

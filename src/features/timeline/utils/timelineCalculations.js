@@ -14,7 +14,7 @@ export function calculateTimelinePositions(items) {
   const endDate = new Date(Math.max(...dates));
   const totalDays = differenceInDays(endDate, startDate);
 
-  // Calculate position and width for each item
+  // Calculate position and width for each item with relaxation rules
   const itemsWithPositions = items.map(item => {
     const itemStart = parseISO(item.start);
     const itemEnd = parseISO(item.end);
@@ -25,13 +25,20 @@ export function calculateTimelinePositions(items) {
     const leftPercentage = totalDays > 0 ? (daysFromStart / totalDays) * 100 : 0;
     const widthPercentage = totalDays > 0 ? (duration / totalDays) * 100 : 100;
 
+    // Apply relaxation rules for better usability
+    const relaxationInfo = calculateRelaxationInfo(item.name, duration, widthPercentage);
+
     return {
       ...item,
       position: {
         left: leftPercentage,
-        width: Math.max(widthPercentage, 2), // Minimum 2% width for visibility
+        width: Math.max(widthPercentage, relaxationInfo.minWidth),
+        originalWidth: widthPercentage,
         daysFromStart,
-        duration
+        duration,
+        needsMultiLine: relaxationInfo.needsMultiLine,
+        isShortDuration: relaxationInfo.isShortDuration,
+        recommendedHeight: relaxationInfo.recommendedHeight
       }
     };
   });
@@ -84,4 +91,68 @@ export function generateDateMarkers(startDate, endDate, totalDays) {
   }
 
   return markers;
+}
+
+/**
+ * Calculates relaxation information for timeline items
+ * @param {string} name - Item name
+ * @param {number} duration - Item duration in days
+ * @param {number} originalWidth - Original calculated width percentage
+ * @returns {Object} Relaxation information
+ */
+function calculateRelaxationInfo(name, duration, originalWidth) {
+  const nameLength = name.length;
+  
+  // Determine if item needs special treatment
+  const isShortDuration = duration <= 2;
+  const isLongName = nameLength > 25;
+  const isVeryLongName = nameLength > 40;
+  
+  // Calculate minimum width based on content
+  let minWidth = originalWidth;
+  let needsMultiLine = false;
+  let recommendedHeight = 40; // Base height
+  
+  // Rule 0: Very small original width always gets expanded
+  if (originalWidth < 2) {
+    minWidth = Math.max(originalWidth, 8); // Small items get at least 8%
+    recommendedHeight = 50;
+  }
+  
+  // Rule 1: Single day events need minimum readable space
+  if (duration === 1) {
+    minWidth = Math.max(originalWidth, 6); // At least 6% of timeline (increased from 4%)
+    recommendedHeight = 45;
+  }
+  
+  // Rule 2: Short duration with long names
+  if (isShortDuration && isLongName) {
+    minWidth = Math.max(originalWidth, 8); // At least 8% of timeline (increased from 6%)
+    needsMultiLine = isVeryLongName;
+    recommendedHeight = needsMultiLine ? 60 : 50;
+  }
+  
+  // Rule 3: Very long names regardless of duration
+  if (isVeryLongName) {
+    needsMultiLine = true;
+    recommendedHeight = 65;
+    minWidth = Math.max(originalWidth, 10); // At least 10% for very long names (increased from 8%)
+  }
+  
+  // Rule 4: Regular long names
+  else if (isLongName && !isShortDuration) {
+    minWidth = Math.max(originalWidth, 7); // At least 7% of timeline (increased from 5%)
+    recommendedHeight = 45;
+  }
+  
+  // Ensure minimum visibility but cap maximum to prevent excessive expansion
+  minWidth = Math.max(minWidth, 5); // Absolute minimum 5% (increased from 3%)
+  minWidth = Math.min(minWidth, 15); // Maximum 15% to prevent timeline breaking (increased from 12%)
+  
+  return {
+    minWidth,
+    needsMultiLine,
+    isShortDuration,
+    recommendedHeight
+  };
 }

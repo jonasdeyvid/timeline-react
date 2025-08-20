@@ -100,7 +100,8 @@
 .timeline-lane {
   display: flex;
   border-bottom: 1px solid var(--border-color);
-  min-height: 70px;
+  /* Height will be controlled by inline styles */
+  position: relative;
 }
 
 .timeline-lane:last-child {
@@ -127,7 +128,7 @@
     rgba(76, 175, 80, 0.05) 50%, 
     transparent 100%
   );
-  padding: 15px 0;
+  /* Items will position themselves within this container */
 }
 
 /* Alternating lane colors */

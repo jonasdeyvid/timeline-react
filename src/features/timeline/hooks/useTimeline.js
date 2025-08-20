@@ -12,10 +12,23 @@ export function useTimeline() {
   // Calculate timeline positions based on actual dates
   const timelineData = useMemo(() => calculateTimelinePositions(timelineItems), []);
   
-  // Assign items to lanes with their calculated positions
-  const lanes = useMemo(() => {
+  // Assign items to lanes with their calculated positions and calculate lane heights
+  const lanesWithHeights = useMemo(() => {
     if (!timelineData.items.length) return [];
-    return assignLanes(timelineData.items);
+    const assignedLanes = assignLanes(timelineData.items);
+    
+    // Calculate optimal height for each lane based on its tallest item
+    return assignedLanes.map(lane => {
+      const maxHeight = Math.max(
+        ...lane.map(item => item.position?.recommendedHeight || 40),
+        60 // Minimum lane height
+      );
+      
+      return {
+        items: lane,
+        height: maxHeight + 20 // Add padding for lane spacing
+      };
+    });
   }, [timelineData.items]);
 
   // Generate date markers for the timeline
@@ -30,7 +43,7 @@ export function useTimeline() {
 
   const stats = useMemo(() => ({
     totalItems: timelineItems.length,
-    totalLanes: lanes.length,
+    totalLanes: lanesWithHeights.length,
     totalDays: timelineData.totalDays,
     dateRange: {
       start: timelineData.startDate,
@@ -38,11 +51,11 @@ export function useTimeline() {
       startFormatted: timelineData.startDate ? format(timelineData.startDate, 'yyyy-MM-dd') : '',
       endFormatted: timelineData.endDate ? format(timelineData.endDate, 'yyyy-MM-dd') : ''
     }
-  }), [lanes, timelineData]);
+  }), [lanesWithHeights, timelineData]);
 
   return {
     items: timelineData.items,
-    lanes,
+    lanes: lanesWithHeights,
     dateMarkers,
     stats,
     timelineData
