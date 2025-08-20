@@ -40,12 +40,29 @@
   border: 1px solid var(--border-color);
 }
 
+.zoom-indicator {
+  background: var(--primary-color) !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+
 .timeline-content {
   position: relative;
   background: white;
   border-radius: var(--border-radius-lg);
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: visible;
   box-shadow: var(--shadow-sm);
+}
+
+.timeline-zoom-container {
+  transition: transform 0.3s ease;
+  min-width: 100%;
+}
+
+/* Ensure headers stay aligned with zoomed content */
+.timeline-content > * {
+  position: relative;
 }
 
 /* Date markers */

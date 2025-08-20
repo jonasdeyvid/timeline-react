@@ -1,8 +1,8 @@
 import React from 'react';
 import { format, startOfMonth, endOfMonth, eachMonthOfInterval } from 'date-fns';
 
-function MonthsHeader({ dateRange }) {
-  console.log('MonthsHeader rendering with:', dateRange);
+function MonthsHeader({ dateRange, zoomLevel = 1 }) {
+  console.log('MonthsHeader rendering with:', dateRange, 'zoom:', zoomLevel);
   
   if (!dateRange) {
     return (
@@ -39,7 +39,12 @@ function MonthsHeader({ dateRange }) {
       end: endOfMonth(dateRange.end)
     });
 
-    console.log('Generated months:', months);
+    // Adjust font size based on zoom level for better readability
+    const baseFontSize = 14;
+    const adjustedFontSize = Math.max(10, Math.min(20, baseFontSize / Math.sqrt(zoomLevel)));
+    const yearFontSize = Math.max(8, Math.min(14, 12 / Math.sqrt(zoomLevel)));
+
+    console.log('Generated months:', months, 'adjustedFontSize:', adjustedFontSize);
 
     const showYears = months.length > 1 && months.some(month => 
       format(month, 'yyyy') !== format(months[0], 'yyyy')
@@ -47,37 +52,44 @@ function MonthsHeader({ dateRange }) {
 
     return (
       <div style={{
-        display: 'flex',
-        backgroundColor: '#f8f9fa',
-        borderBottom: '2px solid #dee2e6',
-        padding: '10px 0',
-        fontSize: '14px',
-        minHeight: '50px'
+        transform: `scaleX(${zoomLevel})`,
+        transformOrigin: 'left center',
+        width: `${100 / zoomLevel}%`,
+        transition: 'transform 0.3s ease'
       }}>
-        {months.map((month) => (
-          <div
-            key={format(month, 'yyyy-MM')}
-            style={{
-              flex: '1',
-              textAlign: 'center',
-              padding: '8px',
-              borderRight: '1px solid #dee2e6',
-              fontWeight: '600',
-              color: '#495057',
-              minWidth: '80px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center'
-            }}
-          >
-            <div>{format(month, 'MMMM')}</div>
-            {showYears && (
-              <div style={{ fontSize: '12px', color: '#6c757d', marginTop: '2px' }}>
-                {format(month, 'yyyy')}
-              </div>
-            )}
-          </div>
-        ))}
+        <div style={{
+          display: 'flex',
+          backgroundColor: '#f8f9fa',
+          borderBottom: '2px solid #dee2e6',
+          padding: '10px 0',
+          fontSize: `${adjustedFontSize}px`,
+          minHeight: '50px'
+        }}>
+          {months.map((month) => (
+            <div
+              key={format(month, 'yyyy-MM')}
+              style={{
+                flex: '1',
+                textAlign: 'center',
+                padding: '8px',
+                borderRight: '1px solid #dee2e6',
+                fontWeight: '600',
+                color: '#495057',
+                minWidth: '80px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
+              }}
+            >
+              <div>{format(month, 'MMMM')}</div>
+              {showYears && (
+                <div style={{ fontSize: `${yearFontSize}px`, color: '#6c757d', marginTop: '2px' }}>
+                  {format(month, 'yyyy')}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     );
   } catch (error) {

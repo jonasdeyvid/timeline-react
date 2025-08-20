@@ -8,6 +8,7 @@ const TimelineContext = createContext();
 
 export const TimelineProvider = ({ children }) => {
   const [timelineItems, setTimelineItems] = useState(timelineItemsData);
+  const [zoomLevel, setZoomLevel] = useState(1); // 1 = 100%, 0.5 = 50%, 2 = 200%
 
   const updateItemName = (itemId, newName) => {
     setTimelineItems(prevItems => 
@@ -49,6 +50,22 @@ export const TimelineProvider = ({ children }) => {
         } : item
       );
     });
+  };
+
+  const zoomIn = () => {
+    setZoomLevel(prevZoom => Math.min(prevZoom * 1.5, 5)); // Max zoom 5x
+  };
+
+  const zoomOut = () => {
+    setZoomLevel(prevZoom => Math.max(prevZoom / 1.5, 0.1)); // Min zoom 0.1x
+  };
+
+  const resetZoom = () => {
+    setZoomLevel(1);
+  };
+
+  const setCustomZoom = (level) => {
+    setZoomLevel(Math.max(0.1, Math.min(level, 5)));
   };
 
   const timelineData = useMemo(() => calculateTimelinePositions(timelineItems), [timelineItems]);
@@ -98,7 +115,12 @@ export const TimelineProvider = ({ children }) => {
     stats,
     timelineData,
     updateItemName,
-    updateItemDates
+    updateItemDates,
+    zoomLevel,
+    zoomIn,
+    zoomOut,
+    resetZoom,
+    setCustomZoom
   };
 
   return (

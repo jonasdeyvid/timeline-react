@@ -2,13 +2,20 @@ import React from 'react';
 import { useTimelineContext } from '../../context/TimelineContext';
 import TimelineItem from '../TimelineItem';
 import MonthsHeader from '../MonthsHeader';
+import ZoomControls from '../ZoomControls';
+import useZoomKeyboardShortcuts from '../../hooks/useZoomKeyboardShortcuts';
 import './TimelineContainer.css';
 
 function TimelineContainer() {
-  const { lanes, dateMarkers, stats, updateItemName, updateItemDates, timelineData } = useTimelineContext();
+  const { lanes, dateMarkers, stats, updateItemName, updateItemDates, timelineData, zoomLevel } = useTimelineContext();
+  
+  // Add keyboard shortcuts for zoom
+  useZoomKeyboardShortcuts();
 
   return (
     <div className="timeline-container">
+      <ZoomControls />
+      
       <header className="timeline-header">
         <h2>Timeline Project {"\u2728"}</h2>
         <div className="timeline-stats">
@@ -16,13 +23,22 @@ function TimelineContainer() {
           <span>{stats.totalLanes} lanes</span>
           <span>{stats.totalDays} days</span>
           <span>{stats.dateRange.startFormatted} - {stats.dateRange.endFormatted}</span>
+          <span className="zoom-indicator">🔍 {Math.round(zoomLevel * 100)}%</span>
         </div>
       </header>
       
       <div className="timeline-content">
-        <MonthsHeader dateRange={stats.dateRange} />
+        <MonthsHeader dateRange={stats.dateRange} zoomLevel={zoomLevel} />
         
-        <div className="timeline-dates">
+        <div 
+          className="timeline-zoom-container"
+          style={{
+            transform: `scaleX(${zoomLevel})`,
+            transformOrigin: 'left center',
+            width: `${100 / zoomLevel}%`
+          }}
+        >
+          <div className="timeline-dates">
           {dateMarkers.map((marker, index) => (
             <div
               key={index}
@@ -55,7 +71,8 @@ function TimelineContainer() {
                 ))}
               </div>
             </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
