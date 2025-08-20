@@ -1,11 +1,9 @@
 import React from 'react';
 import { useTimeline } from '../../hooks/useTimeline';
 import TimelineItem from '../TimelineItem';
+import MonthsHeader from '../MonthsHeader';
 import './TimelineContainer.css';
 
-/**
- * Main timeline container component
- */
 function TimelineContainer() {
   const { lanes, dateMarkers, stats } = useTimeline();
 
@@ -22,7 +20,8 @@ function TimelineContainer() {
       </header>
       
       <div className="timeline-content">
-        {/* Date markers */}
+        <MonthsHeader dateRange={stats.dateRange} />
+        
         <div className="timeline-dates">
           {dateMarkers.map((marker, index) => (
             <div
@@ -36,7 +35,6 @@ function TimelineContainer() {
           ))}
         </div>
         
-        {/* Timeline lanes */}
         <div className="timeline-lanes">
           {lanes.map((laneData, laneIndex) => (
             <div 
