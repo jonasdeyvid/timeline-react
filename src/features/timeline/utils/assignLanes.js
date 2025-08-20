@@ -14,20 +14,16 @@ function assignLanes(items) {
       for (const lane of lanes) {
           const lastItem = lane[lane.length - 1];
           
-          // Check both date-based overlap and visual overlap
           const dateBasedNoOverlap = new Date(lastItem.end) < new Date(item.start);
           
-          // If items have position data, also check visual overlap
           let visualNoOverlap = true;
           if (lastItem.position && item.position) {
               const lastItemVisualEnd = lastItem.position.left + lastItem.position.width;
               const currentItemVisualStart = item.position.left;
-              // Add a small buffer (1%) to prevent visual overlap
               const buffer = 1;
               visualNoOverlap = (lastItemVisualEnd + buffer) <= currentItemVisualStart;
           }
           
-          // Item can share lane if both conditions are met
           if (dateBasedNoOverlap && visualNoOverlap) {
               lane.push(item);
               return;

@@ -8,7 +8,7 @@ const TimelineContext = createContext();
 
 export const TimelineProvider = ({ children }) => {
   const [timelineItems, setTimelineItems] = useState(timelineItemsData);
-  const [zoomLevel, setZoomLevel] = useState(1); // 1 = 100%, 0.5 = 50%, 2 = 200%
+  const [zoomLevel, setZoomLevel] = useState(1);
 
   const updateItemName = (itemId, newName) => {
     setTimelineItems(prevItems => 
@@ -21,19 +21,16 @@ export const TimelineProvider = ({ children }) => {
   const updateItemDates = (itemId, newStartDate, newEndDate) => {
     console.log('Updating item dates:', itemId, newStartDate, newEndDate);
     
-    // Check if we need to expand timeline
     const newStart = new Date(newStartDate);
     const newEnd = new Date(newEndDate);
     
     setTimelineItems(prevItems => {
-      // Find current timeline bounds
       const allDates = prevItems.flatMap(item => [new Date(item.start), new Date(item.end)]);
       allDates.push(newStart, newEnd);
       
       const currentMinDate = new Date(Math.min(...allDates));
       const currentMaxDate = new Date(Math.max(...allDates));
       
-      // Expand timeline if necessary (add some buffer months)
       const expandedMinDate = startOfMonth(subMonths(currentMinDate, 1));
       const expandedMaxDate = endOfMonth(addMonths(currentMaxDate, 1));
       
@@ -53,11 +50,11 @@ export const TimelineProvider = ({ children }) => {
   };
 
   const zoomIn = () => {
-    setZoomLevel(prevZoom => Math.min(prevZoom * 1.5, 5)); // Max zoom 5x
+    setZoomLevel(prevZoom => Math.min(prevZoom * 1.5, 5));
   };
 
   const zoomOut = () => {
-    setZoomLevel(prevZoom => Math.max(prevZoom / 1.5, 0.1)); // Min zoom 0.1x
+    setZoomLevel(prevZoom => Math.max(prevZoom / 1.5, 0.1));
   };
 
   const resetZoom = () => {
