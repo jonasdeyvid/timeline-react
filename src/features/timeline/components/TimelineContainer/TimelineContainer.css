@@ -60,6 +60,16 @@
   min-width: 100%;
 }
 
+/* Counter-scale text elements to maintain font sizes */
+.timeline-zoom-container .date-label {
+  transform: translateX(-50%) scaleX(var(--font-scale, 1));
+}
+
+.timeline-zoom-container .lane-header {
+  transform: scaleX(var(--font-scale, 1));
+  transform-origin: left center;
+}
+
 /* Ensure headers stay aligned with zoomed content */
 .timeline-content > * {
   position: relative;

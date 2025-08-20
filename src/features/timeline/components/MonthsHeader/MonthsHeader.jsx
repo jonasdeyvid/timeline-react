@@ -39,12 +39,11 @@ function MonthsHeader({ dateRange, zoomLevel = 1 }) {
       end: endOfMonth(dateRange.end)
     });
 
-    // Adjust font size based on zoom level for better readability
+    // Keep font sizes constant regardless of zoom level
     const baseFontSize = 14;
-    const adjustedFontSize = Math.max(10, Math.min(20, baseFontSize / Math.sqrt(zoomLevel)));
-    const yearFontSize = Math.max(8, Math.min(14, 12 / Math.sqrt(zoomLevel)));
+    const yearFontSize = 12;
 
-    console.log('Generated months:', months, 'adjustedFontSize:', adjustedFontSize);
+    console.log('Generated months:', months, 'baseFontSize:', baseFontSize);
 
     const showYears = months.length > 1 && months.some(month => 
       format(month, 'yyyy') !== format(months[0], 'yyyy')
@@ -52,17 +51,15 @@ function MonthsHeader({ dateRange, zoomLevel = 1 }) {
 
     return (
       <div style={{
-        transform: `scaleX(${zoomLevel})`,
-        transformOrigin: 'left center',
-        width: `${100 / zoomLevel}%`,
-        transition: 'transform 0.3s ease'
+        width: `${100 * zoomLevel}%`,
+        transition: 'width 0.3s ease'
       }}>
         <div style={{
           display: 'flex',
           backgroundColor: '#f8f9fa',
           borderBottom: '2px solid #dee2e6',
           padding: '10px 0',
-          fontSize: `${adjustedFontSize}px`,
+          fontSize: `${baseFontSize}px`,
           minHeight: '50px'
         }}>
           {months.map((month) => (

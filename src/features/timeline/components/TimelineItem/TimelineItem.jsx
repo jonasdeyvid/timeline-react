@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import { addDays, format, differenceInDays } from 'date-fns';
 import './TimelineItem.css';
 
-function TimelineItem({ item, onNameChange, onDateChange, timelineData }) {
+function TimelineItem({ item, onNameChange, onDateChange, timelineData, zoomLevel = 1 }) {
   const { position, name, start, end, id } = item;
   const [isEditing, setIsEditing] = useState(false);
   const [editingName, setEditingName] = useState(name);
@@ -272,6 +272,10 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData }) {
         className="timeline-item-resize-handle resize-start"
         onMouseDown={(e) => handleMouseDown(e, 'resize-start')}
         title="Drag to change start date"
+        style={{
+          transform: `scaleX(${1/zoomLevel})`,
+          transformOrigin: 'left center'
+        }}
       >
         ◀
       </div>
@@ -279,6 +283,10 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData }) {
       <div 
         className="timeline-item-content"
         onMouseDown={(e) => handleMouseDown(e, 'move')}
+        style={{
+          transform: `scaleX(${1/zoomLevel})`,
+          transformOrigin: 'left center'
+        }}
       >
         <div className="timeline-item-section timeline-item-name-section">
           {isEditing ? (
@@ -324,6 +332,10 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData }) {
         className="timeline-item-resize-handle resize-end"
         onMouseDown={(e) => handleMouseDown(e, 'resize-end')}
         title="Drag to change end date"
+        style={{
+          transform: `scaleX(${1/zoomLevel})`,
+          transformOrigin: 'right center'
+        }}
       >
         ▶
       </div>

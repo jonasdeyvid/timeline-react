@@ -35,7 +35,8 @@ function TimelineContainer() {
           style={{
             transform: `scaleX(${zoomLevel})`,
             transformOrigin: 'left center',
-            width: `${100 / zoomLevel}%`
+            width: `${100 / zoomLevel}%`,
+            '--font-scale': `${1/zoomLevel}`
           }}
         >
           <div className="timeline-dates">
@@ -67,6 +68,7 @@ function TimelineContainer() {
                     onNameChange={updateItemName}
                     onDateChange={updateItemDates}
                     timelineData={timelineData}
+                    zoomLevel={zoomLevel}
                   />
                 ))}
               </div>
