@@ -1,6 +1,7 @@
 /**
  * Takes an array of items and assigns them to lanes based on start/end dates.
- * @returns an array of arrays containing items.
+ * @param {Array} items - Array of timeline items with start and end dates
+ * @returns {Array} an array of arrays containing items organized by lanes.
  */
 function assignLanes(items) {
   const sortedItems = items.sort((a, b) =>
@@ -23,3 +24,5 @@ function assignLanes(items) {
   }
   return lanes;
 }
+
+export default assignLanes;

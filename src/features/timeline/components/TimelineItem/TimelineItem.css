@@ -1,0 +1,79 @@
+.timeline-item {
+  position: absolute;
+  height: 40px;
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  min-width: 60px; /* Minimum width to ensure readability */
+}
+
+.timeline-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(255, 255, 255, 0.4);
+  z-index: 10;
+}
+
+.timeline-item-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 4px 8px;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.timeline-item-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.timeline-item-dates {
+  font-size: 0.65rem;
+  opacity: 0.9;
+  font-family: 'Monaco', 'Consolas', monospace;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Different colors for items */
+.timeline-item:nth-child(3n+1) {
+  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+}
+
+.timeline-item:nth-child(3n+2) {
+  background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+}
+
+.timeline-item:nth-child(3n+3) {
+  background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);
+}
+
+/* Smaller items get adjusted styling */
+.timeline-item[style*="width: 2%"],
+.timeline-item[style*="width: 3%"],
+.timeline-item[style*="width: 4%"] {
+  min-width: 50px;
+}
+
+.timeline-item[style*="width: 2%"] .timeline-item-name,
+.timeline-item[style*="width: 3%"] .timeline-item-name,
+.timeline-item[style*="width: 4%"] .timeline-item-name {
+  font-size: 0.7rem;
+}
+
+.timeline-item[style*="width: 2%"] .timeline-item-dates,
+.timeline-item[style*="width: 3%"] .timeline-item-dates,
+.timeline-item[style*="width: 4%"] .timeline-item-dates {
+  display: none; /* Hide dates for very small items */
+}
