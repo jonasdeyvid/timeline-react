@@ -18,6 +18,12 @@
   margin-bottom: 12px;
 }
 
+.zoom-controls-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .zoom-controls-title {
   font-size: 0.9rem;
   font-weight: 600;
@@ -33,6 +39,34 @@
   font-weight: bold;
   min-width: 40px;
   text-align: center;
+}
+
+.minimize-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+}
+
+.minimize-btn:hover {
+  background: var(--background-muted);
+  color: var(--text-primary);
+}
+
+.zoom-controls.minimized {
+  min-width: auto;
+}
+
+.zoom-controls.minimized .zoom-controls-header {
+  margin-bottom: 0;
 }
 
 .zoom-buttons {

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTimelineContext } from '../../context/TimelineContext';
 import './ZoomControls.css';
 
 function ZoomControls() {
   const { zoomLevel, zoomIn, zoomOut, resetZoom, setCustomZoom } = useTimelineContext();
+  const [isMinimized, setIsMinimized] = useState(false);
 
   const handleZoomChange = (e) => {
     const newZoom = parseFloat(e.target.value);
@@ -14,16 +15,31 @@ function ZoomControls() {
     return Math.round(zoom * 100);
   };
 
+  const toggleMinimize = () => {
+    setIsMinimized(!isMinimized);
+  };
+
   const zoomPresets = [0.25, 0.5, 1, 1.5, 2, 3, 5];
 
   return (
-    <div className="zoom-controls">
+    <div className={`zoom-controls ${isMinimized ? 'minimized' : ''}`}>
       <div className="zoom-controls-header">
         <span className="zoom-controls-title">🔍 Zoom</span>
-        <span className="zoom-level-display">{formatZoomPercentage(zoomLevel)}%</span>
+        <div className="zoom-controls-header-right">
+          <span className="zoom-level-display">{formatZoomPercentage(zoomLevel)}%</span>
+          <button 
+            className="minimize-btn"
+            onClick={toggleMinimize}
+            title={isMinimized ? "Expand zoom controls" : "Minimize zoom controls"}
+          >
+            {isMinimized ? '⬆' : '⬇'}
+          </button>
+        </div>
       </div>
       
-      <div className="zoom-buttons">
+      {!isMinimized && (
+        <>
+          <div className="zoom-buttons">
         <button 
           className="zoom-btn zoom-out-btn"
           onClick={zoomOut}
@@ -75,6 +91,8 @@ function ZoomControls() {
           </button>
         ))}
       </div>
+      </>
+      )}
     </div>
   );
 }
