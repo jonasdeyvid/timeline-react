@@ -73,7 +73,7 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData, zoomLeve
     }
     
     const rect = timelineContainer.getBoundingClientRect();
-    const relativeX = clientX - rect.left; // Allow negative values for expansion
+    const relativeX = clientX - rect.left;
     const percentage = (relativeX / rect.width) * 100;
     
     console.log('Calculating date:', { 
@@ -92,9 +92,8 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData, zoomLeve
     const newDate = addDays(timelineData.startDate, dayOffset);
     console.log('New date calculated:', newDate, 'dayOffset:', dayOffset);
     
-    // Check if we're dragging beyond timeline bounds
-    const isExpandingLeft = percentage < -5; // 5% buffer before expanding
-    const isExpandingRight = percentage > 105; // 5% buffer before expanding
+    const isExpandingLeft = percentage < -5;
+    const isExpandingRight = percentage > 105;
     
     if (isExpandingLeft || isExpandingRight) {
       console.log('Timeline expansion needed:', { isExpandingLeft, isExpandingRight, percentage });
@@ -128,7 +127,7 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData, zoomLeve
     });
     
     return {
-      left: left, // Don't clamp to allow visual indication of expansion
+      left: left,
       width: Math.max(0.5, width)
     };
   }, [timelineData]);
@@ -158,7 +157,6 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData, zoomLeve
       isDraggingRef.current = false;
       dragTypeRef.current = null;
       
-      // Only now update the actual dates
       if (finalDatesRef.current && onDateChange) {
         console.log('Final update with:', finalDatesRef.current);
         onDateChange(id, finalDatesRef.current.newStartDate, finalDatesRef.current.newEndDate);
@@ -224,12 +222,10 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData, zoomLeve
       console.log('Resize end mode:', { newStartDate, newEndDate });
     }
     
-    // Store the final dates but don't call onDateChange yet
     if (newStartDate && newEndDate) {
       finalDatesRef.current = { newStartDate, newEndDate };
       setDragPreview({ start: newStartDate, end: newEndDate });
       
-      // Calculate new position for preview
       const newPosition = calculatePositionFromDates(newStartDate, newEndDate);
       if (newPosition) {
         setDragPosition(newPosition);
@@ -243,7 +239,6 @@ function TimelineItem({ item, onNameChange, onDateChange, timelineData, zoomLeve
   const displayEnd = isDragging && dragPreview ? dragPreview.end : end;
   const displayPosition = isDragging && dragPosition ? dragPosition : position;
   
-  // Check if item is being dragged outside timeline bounds
   const isOutsideBounds = isDragging && dragPosition && (
     dragPosition.left < 0 || dragPosition.left + dragPosition.width > 100
   );

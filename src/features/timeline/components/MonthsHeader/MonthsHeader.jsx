@@ -39,7 +39,6 @@ function MonthsHeader({ dateRange, zoomLevel = 1 }) {
       end: endOfMonth(dateRange.end)
     });
 
-    // Keep font sizes constant regardless of zoom level
     const baseFontSize = 14;
     const yearFontSize = 12;
 

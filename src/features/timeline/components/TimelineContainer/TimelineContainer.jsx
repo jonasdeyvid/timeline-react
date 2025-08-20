@@ -9,7 +9,6 @@ import './TimelineContainer.css';
 function TimelineContainer() {
   const { lanes, dateMarkers, stats, updateItemName, updateItemDates, timelineData, zoomLevel } = useTimelineContext();
   
-  // Add keyboard shortcuts for zoom
   useZoomKeyboardShortcuts();
 
   return (

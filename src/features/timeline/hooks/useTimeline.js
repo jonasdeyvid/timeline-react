@@ -4,34 +4,26 @@ import timelineItems from '../data/timelineItems';
 import assignLanes from '../utils/assignLanes';
 import { calculateTimelinePositions, generateDateMarkers } from '../utils/timelineCalculations';
 
-/**
- * Custom hook to manage timeline data and lane assignment
- * @returns {Object} Timeline data and utilities
- */
 export function useTimeline() {
-  // Calculate timeline positions based on actual dates
   const timelineData = useMemo(() => calculateTimelinePositions(timelineItems), []);
   
-  // Assign items to lanes with their calculated positions and calculate lane heights
   const lanesWithHeights = useMemo(() => {
     if (!timelineData.items.length) return [];
     const assignedLanes = assignLanes(timelineData.items);
     
-    // Calculate optimal height for each lane based on its tallest item
     return assignedLanes.map(lane => {
       const maxHeight = Math.max(
-        ...lane.map(item => item.position?.recommendedHeight || 60), // Increased default from 40
-        80 // Minimum lane height (increased from 60)
+        ...lane.map(item => item.position?.recommendedHeight || 60),
+        80
       );
       
       return {
         items: lane,
-        height: maxHeight + 70 // Add padding for lane spacing (increased from 20)
+        height: maxHeight + 70
       };
     });
   }, [timelineData.items]);
 
-  // Generate date markers for the timeline
   const dateMarkers = useMemo(() => {
     if (!timelineData.startDate || !timelineData.endDate) return [];
     return generateDateMarkers(

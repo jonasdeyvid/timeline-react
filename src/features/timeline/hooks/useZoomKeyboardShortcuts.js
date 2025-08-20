@@ -6,7 +6,6 @@ export const useZoomKeyboardShortcuts = () => {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // Check if Ctrl (or Cmd on Mac) is pressed
       if (e.ctrlKey || e.metaKey) {
         switch (e.key) {
           case '+':
@@ -29,13 +28,12 @@ export const useZoomKeyboardShortcuts = () => {
     };
 
     const handleWheel = (e) => {
-      // Zoom with mouse wheel when Ctrl is held
       if (e.ctrlKey || e.metaKey) {
         e.preventDefault();
         if (e.deltaY < 0) {
-          zoomIn(); // Scroll up = zoom in
+          zoomIn();
         } else {
-          zoomOut(); // Scroll down = zoom out
+          zoomOut();
         }
       }
     };
